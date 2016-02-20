@@ -1,4 +1,4 @@
-require "./aitk/*"
+require "./aitk/**"
 
 require "math"
 
