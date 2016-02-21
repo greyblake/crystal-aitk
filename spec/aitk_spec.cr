@@ -4,7 +4,7 @@ describe Aitk do
   describe "#euclidean_distance" do
     context "vector length mismatch" do
       it "raises ArgumentError" do
-        expect_raises(ArgumentError, "Vector length mismatch") do
+        expect_raises(ArgumentError, "Vector mismatch") do
           Aitk.euclidean_distance([0], [1, 2])
         end
       end

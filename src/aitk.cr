@@ -6,7 +6,7 @@ module Aitk
   extend self
 
   def euclidean_distance(vec1 : Array, vec2 : Array)
-    raise ArgumentError.new("Vector length mismatch") if vec1.size != vec2.size
+    raise ArgumentError.new("Vector mismatch") if vec1.size != vec2.size
 
     sum = 0.0
     vec1.size.times do |index|
@@ -16,7 +16,7 @@ module Aitk
   end
 
   def manhattan_distance(vec1 : Array, vec2 : Array)
-    raise ArgumentError.new("Vector length mismatch") if vec1.size != vec2.size
+    raise ArgumentError.new("Vector mismatch") if vec1.size != vec2.size
 
     distance = 0.0
     vec1.size.times do |index|
@@ -26,7 +26,7 @@ module Aitk
   end
 
   def chebyshev_distance(vec1 : Array, vec2 : Array)
-    raise ArgumentError.new("Vector length mismatch") if vec1.size != vec2.size
+    raise ArgumentError.new("Vector mismatch") if vec1.size != vec2.size
 
     max_distance = 0.0
     vec1.size.times do |index|
