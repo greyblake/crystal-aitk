@@ -1,9 +1,12 @@
 # aitk
 
-TODO: Write a description here
+Artificial Intelligence Tool Kit for Crystal programming language.
+
+
+Currently it is just a sandbox, where I learn the AI algorithms based on
+[Artificial Intelligence for Humans](http://www.heatonresearch.com/aifh/) books.
 
 ## Installation
-
 
 Add this to your application's `shard.yml`:
 
@@ -20,21 +23,6 @@ dependencies:
 ```crystal
 require "aitk"
 ```
-
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
-
-## Contributing
-
-1. Fork it ( https://github.com/greyblake/aitk/fork )
-2. Create your feature branch (git checkout -b my-new-feature)
-3. Commit your changes (git commit -am 'Add some feature')
-4. Push to the branch (git push origin my-new-feature)
-5. Create a new Pull Request
 
 ## Contributors
 
