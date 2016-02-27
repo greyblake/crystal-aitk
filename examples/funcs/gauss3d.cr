@@ -2,23 +2,24 @@ def scilab_plot(xs, ys, zs)
   puts "xs = #{xs.inspect}"
   puts "ys = #{ys.inspect}"
 
-  print "zs = ["
+  puts "zs = []"
   zs.each do |arr|
+    print "zs = [zs; "
     print arr.map(&.round(2)).join(",")
-    print "; "
+    puts "]"
   end
-  puts "]"
 
   puts "plot3d(xs, ys, zs)"
 end
 
 
 def func(x, y)
-  a = 7 # max peak
-  b = 0  # center
+  a = 1 # max peak
+  bx = 0.7  # center
+  by = -0.7  # center
   c = 1  # width
 
-  a * Math::E ** (-((x-b)**2 + (y-b)**2)  / c**2)
+  sum = a * Math::E ** (-((x-bx)**2 + (y-bx)**2)  / c**2)
 end
 
 def gen(from, step, to)
@@ -46,4 +47,4 @@ def draw(from=-3.0, step=0.2, to=3.0)
   scilab_plot(xs, ys, zs)
 end
 
-draw(-2, 0.15, 2)
+draw(-2, 0.05, 2)

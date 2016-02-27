@@ -28,7 +28,7 @@ module Aitk
         end
       end
 
-      def call(input)
+      def call(input) : Array(Float64)
         if input.size != @input_size
           msg = "Input size mismatch. Input size is #{@input_size}, but received vector of #{input.size}"
           raise(ArgumentError.new(msg))
