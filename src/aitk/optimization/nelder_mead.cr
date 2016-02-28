@@ -1,6 +1,8 @@
 module Aitk
   module Optimization
     # Tries to find optimal parameters that result into maximum result of function.
+    # If you want to understand better how it works check this PDF: http://www.jasoncantarella.com/downloads/NelderMeadProof.pdf
+    #
     # Example:
     #   # Find x, y for the peak of the given gaussian function in 3D.
     #   def gaussian(input : Array(Float64))
