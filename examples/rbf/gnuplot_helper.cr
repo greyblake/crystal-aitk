@@ -18,6 +18,6 @@ module GnuplotHelper
   end
 
   def draw
-    `gnuplot < ./generate_plot.gnu && eog output.png`
+    `gnuplot < ./generate_plot.gnu && eog tmp/output.png`
   end
 end

@@ -9,7 +9,7 @@ module Aitk
         rbf_params_size = (@input_size + 1) * @rbf_size      # 1 stands for width of gauss function
         memory_size = input_weight_size + output_weight_size + rbf_params_size
 
-        @memory = Array(Float64).new(memory_size) { rand }
+        @memory = Array(Float64).new(memory_size) { (rand - 0.5) * 100 }
         ptr = @memory.to_unsafe
 
         rbf_params_index = input_weight_size
@@ -54,6 +54,33 @@ module Aitk
             sum += val * @output_weights[weight_index]
           end
           sum
+        end
+      end
+
+      # Is used by SimulatedAnnealingTrainer
+      # TODO: it mostly duplicates #initialize, refactor
+      def set_memory(memory : Array(Float64))
+        input_weight_size = @input_size * @rbf_size
+        output_weight_size = (@rbf_size + 1) * @output_size  # 1 stands for bias
+        rbf_params_size = (@input_size + 1) * @rbf_size      # 1 stands for width of gauss function
+        memory_size = input_weight_size + output_weight_size + rbf_params_size
+
+        @memory = memory
+        ptr = @memory.to_unsafe
+
+        rbf_params_index = input_weight_size
+        output_weights_index = rbf_params_index + rbf_params_size
+
+        @input_weights = Slice(Float64).new(ptr, input_weight_size)
+        @rbf_params = Slice(Float64).new(ptr + rbf_params_index, rbf_params_size)
+        @output_weights = Slice(Float64).new(ptr + output_weights_index, output_weight_size)
+
+        # Initiate functions with parameters
+        @rbfs = Array.new(@rbf_size) do |i|
+          func_params_size = @input_size + 1
+          func_params_ptr = ptr + rbf_params_index + i * func_params_size
+          slice = Slice(Float64).new(func_params_ptr, func_params_size)
+          GaussianFunction.new(slice)
         end
       end
     end

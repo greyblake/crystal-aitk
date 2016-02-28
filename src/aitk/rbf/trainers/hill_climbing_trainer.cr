@@ -1,8 +1,6 @@
 module Aitk
   module RBF
     class HillClimbingTrainer < BaseTrainer
-      getter :step_sizes
-
       def initialize(@network, @training_set, acceleration, initial_velocity = 1.0)
         @memory = @network.memory
 
