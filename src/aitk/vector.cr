@@ -5,6 +5,10 @@ module Aitk
     def initialize(@array : Array(Float64))
     end
 
+    def initialize(size : Int)
+      @array = Array(Float64).new(size, 0.0)
+    end
+
     def +(vec)
       raise ArgumentError.new("Vector mismatch") if vec.size != size
 

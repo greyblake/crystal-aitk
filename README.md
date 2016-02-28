@@ -12,6 +12,8 @@ Currently it is just a sandbox, where I learn the AI algorithms based on
 * Random generators
   * LCG
 * Radial basis functions network
+* Optimization
+  * [Nelder-Mead method](https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method)
 
 
 ## Installation
