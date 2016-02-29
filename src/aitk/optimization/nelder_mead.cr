@@ -2,6 +2,21 @@ module Aitk
   module Optimization
     # Tries to find optimal parameters that result into maximum result of function.
     # If you want to understand better how it works check this PDF: http://www.jasoncantarella.com/downloads/NelderMeadProof.pdf
+
+    # By default it tries to initialize solutions, that form simplex based on min and max.
+    # For size=2, it would look like the following triangle (points represent the solutions):
+    #
+    #    ^ y
+    #    |
+    #    * max
+    #    |
+    #    |
+    #    |
+    #    |
+    #    |
+    #    *----------*-----> x
+    #   min         max
+    #
     #
     # Example:
     #   # Find x, y for the peak of the given gaussian function in 3D.
@@ -23,9 +38,13 @@ module Aitk
       getter :scores, :solutions
 
       def initialize(@size, @score_function : Proc(Array(Float64), Float64))
-        @solutions = Array(Vector).new(@size + 1) do
-          random_array = Array(Float64).new(@size) { (rand - 0.5) * 100 }
-          Vector.new(random_array)
+        min = -100.0
+        max = 100.0
+
+        # Build initial simplex
+        @solutions = Array(Vector).new(@size + 1) do |i|
+          arr = Array(Float64).new(@size) { |j| i == j ? max : min }
+          Vector.new(arr)
         end
 
         @scores = @solutions.map { |solution| calc_score(solution) }

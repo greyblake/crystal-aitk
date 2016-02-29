@@ -16,7 +16,8 @@ end
 
 method = Aitk::Optimization::NelderMead.new(2, ->gaussian(Array(Float64)))
 
-200.times do |i|
+100.times do |i|
   method.iterate
+  pp method.scores
 end
 pp method.best_solution
