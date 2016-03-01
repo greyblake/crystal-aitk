@@ -1,23 +1,11 @@
 require "../../src/aitk"
 
-# Example of using Nelder Mead method to find peak of gaussian function.
-# Peak is located in the center, which is in current example x=100, y=-50.
-
-def gaussian(input : Array(Float64))
-  centers = [100.0, -50.0]
-  width = 5.0
-
-  sqr_sum = 0
-  centers.each_with_index do |x, index|
-    sqr_sum += (x - input[index]) ** 2
-  end
-  Math::E ** (-(sqr_sum  / width ** 2))
+optimizer = Aitk::NelderMeadOptimizer.new(2) do |params|
+  x,y = params
+  xc, yc = 30.0, -15.0
+  # pyramid function, with highest peak z=1, in x=30 and y=-15
+  1 - ((x-xc) + (y-yc)).abs - ((y-yc) - (x-xc)).abs
 end
 
-method = Aitk::Optimization::NelderMead.new(2, ->gaussian(Array(Float64)))
 
-100.times do |i|
-  method.iterate
-  pp method.scores
-end
-pp method.best_solution
+pp optimizer.optimize(period: 10, min_change: 0.01)
