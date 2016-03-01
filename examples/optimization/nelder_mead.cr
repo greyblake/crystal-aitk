@@ -8,4 +8,5 @@ optimizer = Aitk::NelderMeadOptimizer.new(2) do |params|
 end
 
 
-pp optimizer.optimize(period: 10, min_change: 0.01)
+#pp optimizer.optimize(period: 10, min_change: 0.01)
+pp optimizer.optimize(iterations: 20)
