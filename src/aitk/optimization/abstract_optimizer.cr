@@ -16,6 +16,7 @@ module Aitk
       @iterations = 0
     end
 
+    # Iterates give number of times, trying to optimize the solution.
     def optimize(iterations = nil, period = 1, min_change = nil)
       raise ArgumentError.new("At least :iterations or :min_change must be specified") unless iterations || min_change
       optimize(iterations: iterations, period: period, min_change: min_change) { false }

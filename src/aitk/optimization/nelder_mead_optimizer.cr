@@ -44,10 +44,12 @@ module Aitk
   # b = [range.begin, range.end]
   # c = [range.begin, range.begin]
   # ```
-  class NelderMeadOptimizer
+  class NelderMeadOptimizer < AbstractOptimizer
     getter :scores, :vectors, :iterations
 
-    def initialize(@size, range = -100.0..100.0, &@fitness_function : Array(Float64) -> Float64)
+    def initialize(type, @size, range = -100.0..100.0, &@fitness_function : Array(Float64) -> Float64)
+      super(type, @size, &@fitness_function)
+
       # Build initial simplex
       @vectors = Array(Vector).new(@size + 1) do |i|
         arr = Array(Float64).new(@size) { |j| i == j ? range.end : range.begin }
@@ -55,72 +57,60 @@ module Aitk
       end
 
       @scores = @vectors.map { |vector| calc_score(vector) }
-      @iterations = 0
-    end
-
-    # Iterates give number of times, trying to optimize the solution.
-    def optimize(iterations = nil, period = 1, min_change = nil)
-      raise ArgumentError.new("At least :iterations or :min_change must be specified") unless iterations || min_change
-      optimize(iterations: iterations, period: period, min_change: min_change) { false }
-    end
-
-    def optimize(iterations = nil : Nil|Int, period = 1, min_change = nil : Nil|Number, &block) : Array(Float64)
-      count = 0
-      prev_score = score
-      loop do
-        iterate
-        count += 1
-
-        if iterations && count >= iterations
-          break
-        elsif count % period == 0
-          break if min_change && (score - prev_score).abs < min_change
-          break if yield(self)
-          prev_score = score
-        end
-      end
-      solution
-    end
-
-    # Get current best score.
-    def score : Float64
-      score_and_solution[0]
-    end
-
-    # Get current best solution.
-    def solution : Array(Float64)
-      score_and_solution[1]
     end
 
     def iterate
-      min_score, min_index = @scores.each_with_index.min
+      worse_score, worse_index = worse_score_and_index
 
       # Find mean of all solutions, except the worse one
       sum = Vector.new(@size)
       @vectors.each_with_index do |vector, index|
-        sum += vector unless index == min_index
+        sum += vector unless index == worse_index
       end
       mean = sum / (@size)
 
       # Find reflection and its score
-      reflection = mean * 2  - @vectors[min_index]
+      reflection = mean * 2  - @vectors[worse_index]
       reflection_score = calc_score(reflection)
 
-      if reflection_score > min_score
+      if better?(reflection_score, worse_score)
         expansion = reflection * 2 - mean
-        @vectors[min_index] = expansion
+        @vectors[worse_index] = expansion
       else
-        contraction = (@vectors[min_index] + mean) / 2
-        @vectors[min_index] = contraction
+        contraction = (@vectors[worse_index] + mean) / 2
+        @vectors[worse_index] = contraction
       end
 
-      @scores[min_index] = calc_score(@vectors[min_index])
+      @scores[worse_index] = calc_score(@vectors[worse_index])
       @iterations += 1
     end
 
-    def score_and_solution
-      best_score, best_index = @scores.each_with_index.max
-      {best_score, @vectors[best_index].array}
+    # Get current best solution.
+    def solution : Array(Float64)
+      best_solution_and_score[0]
+    end
+
+    # Get current best score.
+    def score : Float64
+      best_solution_and_score[1]
+    end
+
+    private def best_solution_and_score
+      best_score, best_index =
+        if @is_max
+          @scores.each_with_index.max
+        else
+          @scores.each_with_index.min
+        end
+      {@vectors[best_index].array, best_score}
+    end
+
+    private def worse_score_and_index
+      if @is_max
+        @scores.each_with_index.min
+      else
+        @scores.each_with_index.max
+      end
     end
 
     private def calc_score(vector) : Float64
