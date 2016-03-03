@@ -10,16 +10,37 @@ def scilab_plot(xs, ys, zs)
   end
 
   puts "plot3d(xs, ys, zs)"
+  puts
 end
 
 
 def func(x, y)
-  a = 1 # max peak
-  bx = 0.7  # center
-  by = -0.7  # center
-  c = 1  # width
+  result = 0.0
 
-  sum = a * Math::E ** (-((x-bx)**2 + (y-by)**2)  / c**2)
+  # 1st
+  bx = 0.0  # center
+  by = 0.0  # center
+  result += 1 * Math::E ** (-((x-bx)**2 + (y-by)**2)  )
+
+  # 2nd
+  bx = -5.0  # center
+  by = -5.0  # center
+  result += 2 * Math::E ** (-((x-bx)**2 + (y-by)**2)  )
+
+  # 3nd
+  bx = 5.0  # center
+  by = 5.0  # center
+  result += 3 * Math::E ** (-((x-bx)**2 + (y-by)**2)  )
+
+  # 4nd
+  bx = 0.0  # center
+  by = 5.0  # center
+  result += 3 * Math::E ** (-((x-bx)**2 + (y-by)**2)  )
+
+  # 5nd (the highest peak)
+  bx = 1.0  # center
+  by = 6.0  # center
+  result += 4 * Math::E ** (-((x-bx)**2 + (y-by)**2)  )
 end
 
 def gen(from, step, to)
@@ -47,4 +68,4 @@ def draw(from=-3.0, step=0.2, to=3.0)
   scilab_plot(xs, ys, zs)
 end
 
-draw(-2, 0.05, 2)
+draw(-8, 0.1, 8)
