@@ -22,7 +22,7 @@ module Aitk
       optimize(iterations: iterations, period: period, min_change: min_change) { false }
     end
 
-    def optimize(iterations = nil : Nil|Int, period = 1, min_change = nil : Nil|Number, &block) : Array(Float64)
+    def optimize(iterations : Nil|Int = nil, period = 1, min_change : Nil|Number = nil, &block) : Array(Float64)
       count = 0
       prev_score = score
       loop do
