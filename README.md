@@ -23,7 +23,7 @@ Add this to your application's `shard.yml`:
 ```yaml
 dependencies:
   aitk:
-    github: greyblake/aitk
+    github: greyblake/crystal-aitk
 ```
 
 
